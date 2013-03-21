@@ -1,0 +1,75 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+	<head>
+		<title>jSurvey</title>
+		<meta charset="UTF-8">
+		<link rel="stylesheet/less" type="text/css" href="jsurvey.css">
+		<script type="text/javascript" src="jquery-1.8.2.js"></script>
+		<script type="text/javascript" src="Arbiter.js"></script>
+		<script type="text/javascript" src="nanoscroller.js"></script>
+		<script type="text/javascript" src="formapi.js"></script>
+		<script type="text/javascript" src="jquery.jlib.js"></script>
+		<script type="text/javascript" src="json2.js"></script>
+		<script type="text/javascript" src="less-1.3.0.min.js"></script>
+		<script type="text/javascript" src="knockout-2.2.1.js"></script>
+		<script type="text/javascript" src="droplist.js"></script>
+		<script type="text/javascript" src="placeholder.js"></script>
+		<script type="text/javascript" src="jsurvey.js"></script>
+	</head>
+	<body>
+		<div id="container" style="width: 400px;">
+			
+		</div>
+		<button class="btn_submit">Submit</button>
+		
+		<script type="text/javascript">
+			
+			var survey = [{
+				name: {
+					type:			"varchar",
+					regex:			"^([A-Za-z]+)$",
+					required:		true,
+					placeholder:	"Your name",
+					label:			"Your name"
+				}
+			},{
+				email: {
+					type:			"varchar",
+					regex:			"^([A-Za-z0-9_\\-\\.])+\@([A-Za-z0-9_\\-\\.])+\\.([A-Za-z]+)$",
+					required:		true,
+					placeholder:	"hello@world.com",
+					label:			"Your email"
+				}
+			},{
+				description: {
+					type:			"text",
+					placeholder:	"Description",
+					label:			false
+				}
+			},{
+				Fruit: {
+					type:			"list",
+					label:			"Fav Fruit?",
+					placeholder:	"Select a fruit",
+					list: [{
+							value:		"apple",
+							label:		"Apple"
+						},{
+							value:		"orange",
+							label:		"Orange"
+						},{
+							value:		"kiwi",
+							label:		"Kiwi"
+					}]
+				}
+			}];
+			
+			$(function() {
+				$("#container").jsurvey({
+					survey:		survey,
+					submit:		$(".btn_submit")
+				});
+			});
+		</script>
+	</body>
+</html>
