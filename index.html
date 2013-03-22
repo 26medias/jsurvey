@@ -20,7 +20,7 @@
 		<div id="container" style="width: 400px;">
 			
 		</div>
-		<button class="btn_submit">Submit</button>
+		<button class="btn_previous">&laquo; Previous</button><button class="btn_next">Next &raquo;</button><button class="btn_submit">Submit</button>
 		
 		<script type="text/javascript">
 			
@@ -30,7 +30,10 @@
 					regex:			"^([A-Za-z]+)$",
 					required:		true,
 					placeholder:	"Your name",
-					label:			"Your name"
+					label:			"Your name",
+					attr:	{
+						"data-group": "1"
+					}
 				}
 			},{
 				email: {
@@ -38,13 +41,20 @@
 					regex:			"^([A-Za-z0-9_\\-\\.])+\@([A-Za-z0-9_\\-\\.])+\\.([A-Za-z]+)$",
 					required:		true,
 					placeholder:	"hello@world.com",
-					label:			"Your email"
+					label:			"Your email",
+					attr:	{
+						"data-group": "1"
+					}
 				}
 			},{
 				description: {
 					type:			"text",
 					placeholder:	"Description",
-					label:			false
+					required:		true,
+					label:			false,
+					attr:	{
+						"data-group": "2"
+					}
 				}
 			},{
 				Fruit: {
@@ -60,14 +70,42 @@
 						},{
 							value:		"kiwi",
 							label:		"Kiwi"
-					}]
+					}],
+					attr:	{
+						"data-group": "2"
+					}
+				}
+			},{
+				lol: {
+					type:			"varchar",
+					regex:			"^([A-Za-z]+)$",
+					required:		true,
+					placeholder:	"LOL!",
+					label:			"Lol",
+					attr:	{
+						"data-group": "3"
+					}
+				}
+			},{
+				email2: {
+					type:			"varchar",
+					regex:			"^([A-Za-z0-9_\\-\\.])+\@([A-Za-z0-9_\\-\\.])+\\.([A-Za-z]+)$",
+					required:		true,
+					placeholder:	"hello@world.com",
+					label:			"Your email",
+					attr:	{
+						"data-group": "3"
+					}
 				}
 			}];
 			
 			$(function() {
 				$("#container").jsurvey({
 					survey:		survey,
-					submit:		$(".btn_submit")
+					submit:		$(".btn_submit"),
+					next:		$(".btn_next"),
+					previous:	$(".btn_previous"),
+					group:		true
 				});
 			});
 		</script>

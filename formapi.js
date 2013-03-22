@@ -16,7 +16,8 @@
 					var scope = this;
 					
 					this.options = $.extend({
-						success: function(response) {}
+						success: 	function(response) {},
+						filter:		false
 					},options);
 					
 					this.process();
@@ -34,8 +35,14 @@
 					var i;
 					
 					// list the fields
-					var required 	= this.element.find('[data-require="true"]');
-					var include 	= this.element.find('[data-include="true"]');
+					if (this.options.filter) {
+						var required 	= this.element.find(this.options.filter).find('[data-require="true"]');
+						var include 	= this.element.find(this.options.filter).find('[data-include="true"]');
+					} else {
+						var required 	= this.element.find('[data-require="true"]');
+						var include 	= this.element.find('[data-include="true"]');
+					}
+					
 					var data 		= {};
 					var flagged		= [];
 					

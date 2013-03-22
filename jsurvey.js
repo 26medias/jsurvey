@@ -14,6 +14,8 @@
 				try {
 					
 					var scope = this;
+					var i;
+					var j;
 					
 					this.options = $.extend({
 						survey:		[]
@@ -33,6 +35,71 @@
 							}
 						});
 					});
+					
+					if (this.options.group) {
+						// find groups
+						this.groups = {};
+						var rows = this.element.find("[data-group]");
+						var min = 1000;
+						var max = 0;
+						for (i=0;i<rows.length;i++) {
+							var groupid = $(rows[i]).data("group");
+							if (!this.groups[groupid]) {
+								this.groups[groupid] = $();
+							}
+							this.groups[groupid] = this.groups[groupid].add($(rows[i]));
+							//$(rows[i]).hide();
+							this.groups[groupid].hide();
+							if (groupid < min) {
+								min = groupid;
+							}
+							if (groupid > max) {
+								max = groupid;
+							}
+						}
+						this.currentgroup = 1;
+						this.groups[this.currentgroup].show();
+						this.options.previous.hide();
+						this.options.submit.hide();
+						
+						this.options.next.click(function() {
+							scope.element.formapi({
+								filter:	'[data-group="'+scope.currentgroup+'"]',
+								success: function(response) {
+									console.info("response",response);
+									if (scope.currentgroup+1 == max) {
+										console.log("max");
+										scope.options.next.hide();
+										scope.options.submit.show();
+									} else {
+										scope.options.next.show();
+									}
+									scope.options.previous.show();
+									if (scope.groups[scope.currentgroup+1]) {
+										scope.groups[scope.currentgroup].slideUp();
+										scope.currentgroup++;
+										scope.groups[scope.currentgroup].slideDown();
+									}
+								}
+							});
+						});
+						this.options.previous.click(function() {
+							if (scope.currentgroup-1 == min) {
+								console.log("max");
+								scope.options.previous.hide();
+							} else {
+								scope.options.previous.show();
+							}
+							scope.options.next.show();
+							if (scope.groups[scope.currentgroup-1]) {
+								scope.groups[scope.currentgroup].slideUp();
+								scope.currentgroup--;
+								scope.groups[scope.currentgroup].slideDown();
+							}
+						});
+					}
+					
+					
 					
 				} catch (err) {
 					this.error(err);
@@ -112,7 +179,8 @@
 					
 					this.stack.push({
 						label:		data.label,
-						el:			el
+						el:			el,
+						attr:		data.attr
 					});
 					
 				} catch (err) {
@@ -136,6 +204,10 @@
 					}
 					var field = $.create("div", row);
 						field.addClass("field");
+						
+					if (item.attr) {
+						row.attr(item.attr);
+					}
 					
 					field.append(item.el);
 					
