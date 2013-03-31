@@ -17,7 +17,8 @@
 					
 					this.options = $.extend({
 						success: 	function(response) {},
-						filter:		false
+						filter:		false,
+						validator:	false
 					},options);
 					
 					this.process();
@@ -50,6 +51,9 @@
 					for (i=0;i<required.length;i++) {
 						var el 			= $(required[i]);
 						var validated 	= this.validateField(el, false);
+						if (scope.options.validator) {
+							validated	= validated && scope.options.validator(el, false);
+						}
 						if (!validated) {
 							flagged.push(el);
 						} else {
@@ -60,19 +64,30 @@
 					for (i=0;i<include.length;i++) {
 						var el 			= $(include[i]);
 						var validated 	= this.validateField(el, true);
+						if (scope.options.validator) {
+							validated	= validated && scope.options.validator(el, false);
+						}
 						if (!validated) {
 							flagged.push(el);
 						} else {
 							if (this.getval(el) != '') {
 								data[el.attr("data-name")] = this.getval(el);
 							}
-							$(el).removeClass("formapi_flagged");
+							if ($(el).data("isdroplist")) {
+								$(el).parent().find(".droplist").removeClass("formapi_flagged");;
+							} else {
+								$(el).removeClass("formapi_flagged");
+							}
 						}
 					}
 					
 					// display errors
 					for (i=0;i<flagged.length;i++) {
-						$(flagged[i]).addClass("formapi_flagged");
+						if ($(flagged[i]).data("isdroplist")) {
+							$(flagged[i]).parent().find(".droplist").addClass("formapi_flagged");;
+						} else {
+							$(flagged[i]).addClass("formapi_flagged");
+						}
 					}
 					
 					if (flagged.length == 0) {

@@ -89,6 +89,34 @@
 .form > .row.nolabel > .field {
 	margin-left:	0;
 }
+.form.block {
+	.box-sizing();
+}
+.form.block > .row {
+	clear:			both;
+	padding:		4px;
+}
+.form.block > .row > .label {
+	.box-sizing();
+	float:			none;
+	padding:		5px 3px;
+	width:			100%;
+}
+.form.block > .row > .field {
+	.box-sizing();
+	margin-left:	0;
+	width:			100%;
+}
+.form.block > .row > .field > .helper {
+	.box-sizing();
+	font-size:		11px;
+	text-align:		right;
+	margin-left:	0;
+	width:			100%;
+}
+.form.block > .row.nolabel > .field {
+	margin-left:	0;
+}
 
 input,
 textarea {

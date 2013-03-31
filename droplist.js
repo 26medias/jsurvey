@@ -49,6 +49,18 @@
 						}
 					});
 					
+					window.Arbiter.subscribe("droplist."+this.data.name+".val", function(data){
+						scope.val(data.val, data.stopPropagation);
+					});
+					
+					window.Arbiter.subscribe("droplist."+this.data.name+".edit", function(data){
+						if (data.push) {
+							var li = $.create("li", scope.ul);
+							li.html(data.push.label);
+							li.attr("data-value", data.push.value);
+						}
+					});
+					
 				} catch (err) {
 					this.error(err);
 				}
@@ -197,13 +209,12 @@
 					this.error(err);
 				}
 			};
-			pluginClass.prototype.val = function (str) {
+			pluginClass.prototype.val = function (str, stopPropagation) {
 				try {
 					
 					var scope 	= this;
 					
 					//console.log("val",str);
-					
 					
 					var el = this.dropcontainer.find('[data-value="'+str+'"]');
 					
@@ -221,13 +232,15 @@
 					
 					this.hidden.val(str);
 					
+					if (stopPropagation) {
+						return true;	// prevent the code from goign further
+					}
 					window.Arbiter.inform("droplist."+this.data.name, {
 						value:	str,
 						label:	this.element.html(),
 						el:		this.element
 					});
 					
-					console.log("this.element.data.event",this.element,this.element.data("event"));
 					if (this.element.data("event")) {
 						window.Arbiter.inform("droplist."+this.element.data("event"), {
 							value:	str,

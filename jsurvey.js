@@ -1,5 +1,5 @@
 /**
-	photofeed
+	jSurvey
 	@version:		1.0.0
 	@author:		Julien Loutre <julien.loutre@gmail.com>
 */
@@ -18,28 +18,46 @@
 					var j;
 					
 					this.options = $.extend({
-						survey:		[]
+						survey:		[],
+						onSubmit:	function() {}
 					},options);
 					
 					this.stack = [];
+					
+					this.fields		= {};
 					
 					this.render(this.options.survey);
 					
 					$("input[data-placeholder]").jplaceholder();
 					$(".droplist").droplist();
 					
+					if (!this.options.quiz) {
+						this.validator = function(el, errorOnly){
+							return true
+						};
+					} else {
+						this.validator = function(el, errorOnly) {
+							return scope.quizValidate(el, errorOnly);
+						};
+					}
+					
 					this.options.submit.click(function() {
 						scope.element.formapi({
-							success: function(response) {
+							validator:	scope.validator,
+							success: 	function(response) {
 								console.info("response",response);
+								scope.options.onSubmit(response);
 							}
 						});
 					});
 					
+					
+					// Manage Grouping
 					if (this.options.group) {
 						// find groups
 						this.groups = {};
 						var rows = this.element.find("[data-group]");
+						console.log("rows",rows, this.element);
 						var min = 1000;
 						var max = 0;
 						for (i=0;i<rows.length;i++) {
@@ -57,13 +75,31 @@
 								max = groupid;
 							}
 						}
+						console.log("this.groups",this.groups);
+						// Show the default group #1
 						this.currentgroup = 1;
 						this.groups[this.currentgroup].show();
+						
+						// count number of groups
+						var groupcount = 0;
+						for (j in this.groups) {
+							groupcount++;
+						}
+						
+						// hide previous and submit
 						this.options.previous.hide();
 						this.options.submit.hide();
 						
+						if (groupcount <= 1) {
+							this.options.previous.hide();
+							this.options.next.hide();
+							this.options.submit.show();
+						}
+						
+						// next & previous event handlers
 						this.options.next.click(function() {
 							scope.element.formapi({
+								validator:	scope.validator,
 								filter:	'[data-group="'+scope.currentgroup+'"]',
 								success: function(response) {
 									console.info("response",response);
@@ -97,6 +133,9 @@
 								scope.groups[scope.currentgroup].slideDown();
 							}
 						});
+					} else {
+						scope.options.previous.hide();
+						scope.options.next.hide();
 					}
 					
 					
@@ -113,6 +152,9 @@
 					
 					this.container		= $.create("div", this.element);
 					this.container.addClass("form");
+					if (this.options.quiz || this.options.block) {
+						this.container.addClass("block");
+					}
 					
 					for (i=0;i<this.options.survey.length;i++) {
 						this.parseItem(this.options.survey[i]);
@@ -140,22 +182,24 @@
 					for (name in item) {
 						data = item[name];
 					}
+					
 					switch (data.type) {
 						default:
 						case "varchar":
-							el 			= $.create("input",$(),true);
-							el.type 	= "text";
-							el 			= $(el);
+							this.fields[name] 			= $.create("input",$(),true);
+							this.fields[name].type 		= "text";
+							this.fields[name] 			= $(this.fields[name]);
 						break;
 						case "text":
-							el 			= $.create("textarea",$());
+							this.fields[name] 			= $.create("textarea",$());
 						break;
 						case "list":
-							el 			= $.create("div",$());
-							el.addClass("droplist");
+							this.fields[name] 			= $.create("div",$());
+							this.fields[name].addClass("droplist");
+							this.fields[name].attr("data-isdroplist",true);
 							for (i=0;i<data.list.length;i++) {
 								(function(i){
-									var listitem	= $.create("div", el);
+									var listitem	= $.create("div", scope.fields[name]);
 										listitem.attr("data-value", data.list[i].value);
 										listitem.html(data.list[i].label);
 								})(i);
@@ -164,23 +208,30 @@
 					}
 					
 					if (data.regex) {
-						el.attr("data-regex", data.regex);
+						this.fields[name].attr("data-regex", data.regex);
 					}
 					
 					if (data.placeholder) {
-						el.attr("data-placeholder", data.placeholder);
+						this.fields[name].attr("data-placeholder", data.placeholder);
 					}
 					if (data.required) {
-						el.attr("data-require", true);
+						this.fields[name].attr("data-require", true);
+					}
+					if (data.answer != undefined) {
+						if (!this.answers) {
+							this.answers = {};
+						}
+						this.answers[name] = data.answer;
 					}
 					
-					el.attr("data-name", name);
-					el.attr("data-include", true);
+					this.fields[name].attr("data-name", name);
+					this.fields[name].attr("data-include", true);
 					
 					this.stack.push({
 						label:		data.label,
-						el:			el,
-						attr:		data.attr
+						el:			this.fields[name],
+						attr:		data.attr,
+						helper:		data.clue?data.clue:false
 					});
 					
 				} catch (err) {
@@ -204,12 +255,59 @@
 					}
 					var field = $.create("div", row);
 						field.addClass("field");
-						
+					
 					if (item.attr) {
 						row.attr(item.attr);
 					}
 					
 					field.append(item.el);
+					
+					if (item.helper) {
+						var helper = $.create("div", field)
+						helper.addClass("helper");
+						helper.html(item.helper);
+					}
+					
+				} catch (err) {
+					this.error(err);
+				}
+			};
+			pluginClass.prototype.fill = function (data) {
+				try {
+					var scope = this;
+					var j;
+					
+					console.log("fill",data);
+					
+					for (j in data) {
+						
+						var el = this.fields[j];
+						if (el.hasClass("droplist")) {
+							window.Arbiter.inform("droplist."+j+".val", {
+								val:				data[j],
+								stopPropagation:	true
+							});
+						} else {
+							el.val(data[j]);
+						}
+					}
+					
+				} catch (err) {
+					this.error(err);
+				}
+			};
+			pluginClass.prototype.quizValidate = function (el, errorOnly) {
+				try {
+					var scope = this;
+					var j;
+					
+					var elName = $(el).data("name");
+					console.log("this.answers",this.answers);
+					console.log("elName",elName);
+					if (this.answers[elName] != $(el).val()) {
+						return false;
+					}
+					return true;
 					
 				} catch (err) {
 					this.error(err);
