@@ -205,6 +205,18 @@
 								})(i);
 							}
 						break;
+						case "radio":
+							this.fields[name] 		= $.create("div",$());
+							this.fields[name].addClass("radio");
+							this.fields[name].attr("data-radio",name);
+							for (i=0;i<data.list.length;i++) {
+								(function(i){
+									var listitem	= $.create("div", scope.fields[name]);
+										listitem.attr("data-value", data.list[i].value);
+										listitem.html(data.list[i].label);
+								})(i);
+							}
+						break;
 					}
 					
 					if (data.regex) {
@@ -226,6 +238,11 @@
 					
 					this.fields[name].attr("data-name", name);
 					this.fields[name].attr("data-include", true);
+					
+					if (data.type == "radio") {
+						this.fields[name].radio();
+					}
+					
 					
 					this.stack.push({
 						label:		data.label,

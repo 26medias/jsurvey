@@ -30,8 +30,6 @@
 			pluginClass.prototype.process = function () {
 				try {
 					
-					console.log("PROCESS");
-					
 					var scope 	= this;
 					var i;
 					
@@ -75,6 +73,8 @@
 							}
 							if ($(el).data("isdroplist")) {
 								$(el).parent().find(".droplist").removeClass("formapi_flagged");;
+							} else if ($(el).data("radio")) {
+								$(el).parent().removeClass("formapi_flagged");;
 							} else {
 								$(el).removeClass("formapi_flagged");
 							}
@@ -84,7 +84,9 @@
 					// display errors
 					for (i=0;i<flagged.length;i++) {
 						if ($(flagged[i]).data("isdroplist")) {
-							$(flagged[i]).parent().find(".droplist").addClass("formapi_flagged");;
+							$(flagged[i]).parent().find(".droplist").addClass("formapi_flagged");
+						} else if ($(flagged[i]).data("radio")) {
+							$(flagged[i]).parent().addClass("formapi_flagged");
 						} else {
 							$(flagged[i]).addClass("formapi_flagged");
 						}

@@ -180,3 +180,18 @@ textarea:focus {
 .droplist_container > ul > li.selected {
 	background-color:		@bg-box;
 }
+
+
+.radio {
+	
+}
+.radio > div {
+	cursor:					pointer;
+	background-image:		url("radio_off.png");
+	background-position:	left center;
+	background-repeat:		no-repeat;
+	padding-left:			20px;
+}
+.radio > div.selected {
+	background-image:		url("radio_on.png");
+}
