@@ -71,6 +71,28 @@
 @input-border:			#e9e8e8;
 @bg-box:				#f7f6f6;
 
+
+
+ul.inline {
+	display:			table;
+	list-style:			none;
+	margin:				0;
+	padding:			0;
+}
+ul.inline > li {
+	margin:				0;
+	padding:			0;
+	display:			table-cell;
+	vertical-align:		middle !important;
+}
+
+
+
+
+
+
+
+
 .form {
 	.box-sizing();
 }
@@ -194,4 +216,19 @@ textarea:focus {
 }
 .radio > div.selected {
 	background-image:		url("radio_on.png");
+}
+
+.radio.scale > .radio {
+	cursor:					pointer;
+	background-image:		url("radio_off.png");
+	background-position:	bottom center;
+	background-repeat:		no-repeat;
+	padding-bottom:			16px;
+	min-width:				20px;
+	text-align:				center;
+	font-size:				11px;
+}
+.radio.scale > .radio.selected {
+	background-image:		url("radio_on.png");
+	font-weight:			bold;
 }

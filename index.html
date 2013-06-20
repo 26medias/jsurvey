@@ -98,40 +98,23 @@
 					}
 				}
 			}];*/
-			var survey = [{
-				screens1: {
-					type:			"list",
-					label:			"What did you think about the new screens between games?",
-					placeholder:	"Select one",
-					required:		true,
-					list: [{
-							value:		"bad",
-							label:		"I didn't like it"
-						},{
-							value:		"neutral",
-							label:		"I don't know"
-						},{
-							value:		"good",
-							label:		"I liked it"
-					}],
-					attr:	{
-						"data-group": "1"
-					}
-				}
-			},{
-				screens2: {
+			/*var survey = [{
+				screens: {
 					type:			"radio",
-					label:			"What did you think about the new screens between games?",
+					label:			" What magazine recently wrote that CEO John Mackey “a man who has done more to improve the quality, sustainability, healthfulness, and purity of the food Americans eat—from farm field and barnyard to kitchen table—than anyone else in the past 25 years.”?",
 					required:		true,
 					list: [{
-							value:		"bad",
-							label:		"I didn't like it"
+							value:		"Fast Company",
+							label:		"Fast Company"
 						},{
-							value:		"neutral",
-							label:		"I don't know"
+							value:		"Time",
+							label:		"Time"
 						},{
-							value:		"good",
-							label:		"I liked it"
+							value:		"The New Yorker",
+							label:		"The New Yorker"
+						},{
+							value:		"Better Homes",
+							label:		"Better Homes"
 					}],
 					attr:	{
 						"data-group": "1"
@@ -140,7 +123,7 @@
 			},{
 				bugs1: {
 					type:			"list",
-					label:			"Did you experience any bug during the race?",
+					label:			"Did you experience any bug during the previous race?",
 					placeholder:	"Select one",
 					required:		true,
 					list: [{
@@ -167,19 +150,139 @@
 						"data-group": "2"
 					}
 				}
+			}];
+			
+			
+			
+			var survey = [{
+				browser: {
+					type:			"radio",
+					label:			"What browser are you using?",
+					required:		true,
+					list: [{
+							value:		"Firefox",
+							label:		"Firefox"
+						},{
+							value:		"Safari",
+							label:		"Safari"
+						},{
+							value:		"Chrome",
+							label:		"Chrome"
+						},{
+							value:		"IE",
+							label:		"Internet Explorer"
+					}],
+					attr:	{
+						"data-group": "1"
+					}
+				}
 			},{
-				comments: {
-					type:			"text",
-					placeholder:	"",
-					label:			"Do you have any comment about this race?",
+				os: {
+					type:			"radio",
+					label:			"What Operating System?",
+					required:		true,
+					list: [{
+							value:		"Windows",
+							label:		"Windows"
+						},{
+							value:		"Mac",
+							label:		"Mac"
+						},{
+							value:		"Linux/Unix",
+							label:		"Unix"
+						}],
+					attr:	{
+						"data-group": "1"
+					}
+				}
+			},{
+				login: {
+					type:			"radio",
+					label:			"Are you connecting to fleetwit using facebook?",
+					required:		true,
+					list: [{
+							value:		"Yes",
+							label:		"Yes"
+						},{
+							value:		"No",
+							label:		"No"
+						}],
+					attr:	{
+						"data-group": "2"
+					}
+				}
+			}];
+			*/
+			
+			
+			var survey = [{
+				fun: {
+					type:			"radio",
+					label:			"Did you have fun playing?",
+					required:		true,
+					list: [{
+							value:		"Yes",
+							label:		"Yes"
+						},{
+							value:		"No",
+							label:		"No"
+						}],
+					attr:	{
+						"data-group": "1"
+					}
+				}
+			},{
+				participate: {
+					type:			"radio",
+					label:			"Would you be interested in participating in more race?",
+					required:		true,
+					list: [{
+							value:		"Yes",
+							label:		"Yes"
+						},{
+							value:		"No",
+							label:		"No"
+						}],
+					attr:	{
+						"data-group": "1"
+					}
+				}
+			},{
+				funscale: {
+					type:			"scale",
+					label:			"On a scale from 1 to 10, how would you rate this concept?",
+					required:		true,
+					scale:			{
+						min:	1,
+						max:	10
+					},
+					attr:	{
+						"data-group": "2"
+					}
+				}
+			},{
+				word: {
+					type:			"varchar",
+					label:			"What word would be describe your race experience?",
 					required:		true,
 					attr:	{
-						"data-group": "3"
+						"data-group": "2"
+					}
+				}
+			},{
+				suggestions: {
+					type:			"text",
+					label:			"What would you like to be done differently with the next race?",
+					required:		true,
+					attr:	{
+						"data-group": "2"
 					}
 				}
 			}];
 			
-			console.log("survey",JSON.stringify({survey:survey}));
+			
+			
+			console.log("survey",JSON.stringify({survey:survey,time:600}));
 			
 			
 			
