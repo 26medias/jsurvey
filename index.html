@@ -15,6 +15,7 @@
 		<script type="text/javascript" src="droplist.js"></script>
 		<script type="text/javascript" src="placeholder.js"></script>
 		<script type="text/javascript" src="jsurvey.js"></script>
+		<script type="text/javascript" src="checkbox.js"></script>
 	</head>
 	<body>
 		<div id="container" style="width: 400px;">
@@ -214,9 +215,39 @@
 			}];
 			*/
 			
-			
+			/*
 			var survey = [{
-				fun: {
+				bugs1: {
+					type:			"list",
+					label:			"Did you experience any bug during the previous race?",
+					placeholder:	"Select one",
+					required:		true,
+					list: [{
+							value:		"no",
+							label:		"No bug"
+						},{
+							value:		"little",
+							label:		"There was a few bugs"
+						},{
+							value:		"lot",
+							label:		"There was a lot of bugs"
+					}],
+					attr:	{
+						"data-group": "1"
+					}
+				}
+			},{
+				bugs2: {
+					type:			"text",
+					placeholder:	"",
+					label:			"If you experienced any bug, please describe.",
+					required:		false,
+					attr:	{
+						"data-group": "1"
+					}
+				}
+			},{
+				facebook: {
 					type:			"radio",
 					label:			"Did you have fun playing?",
 					required:		true,
@@ -228,13 +259,94 @@
 							label:		"No"
 						}],
 					attr:	{
-						"data-group": "1"
+						"data-group": "2"
 					}
 				}
 			},{
-				participate: {
+				family1: {
 					type:			"radio",
-					label:			"Would you be interested in participating in more race?",
+					label:			"Have you recommended FleetWit to a friend or a family member in person?",
+					required:		true,
+					list: [{
+							value:		"Yes",
+							label:		"Yes"
+						},{
+							value:		"No",
+							label:		"No"
+						}],
+					attr:	{
+						"data-group": "2"
+					}
+				}
+			},{
+				family2: {
+					type:			"radio",
+					label:			"Do you know of a friend or family member who has participated in a FleetWit race?",
+					required:		true,
+					list: [{
+							value:		"Yes",
+							label:		"Yes"
+						},{
+							value:		"No",
+							label:		"No"
+						}],
+					attr:	{
+						"data-group": "2"
+					}
+				}
+			},{
+				layout: {
+					type:			"radio",
+					label:			"Do you like FleetWit's new layout?",
+					required:		true,
+					list: [{
+							value:		"Yes",
+							label:		"Yes"
+						},{
+							value:		"No",
+							label:		"No"
+						}],
+					attr:	{
+						"data-group": "3"
+					}
+				}
+			},{
+				races: {
+					type:			"radio",
+					label:			"Do you look forward to FleetWit races?",
+					required:		true,
+					list: [{
+							value:		"Yes",
+							label:		"Yes"
+						},{
+							value:		"No",
+							label:		"No"
+						}],
+					attr:	{
+						"data-group": "3"
+					}
+				}
+			}];
+			
+			
+			var survey = [{
+				code: {
+					type:			"varchar",
+					placeholder:	"",
+					label:			"WordPress Code (Soundcloud > Share > WordPress Code)",
+					required:		true,
+					attr:	{
+						"data-group": "1"
+					}
+				}
+			}];
+			*/
+			
+			
+			var survey = [{
+				shopped: {
+					type:			"radio",
+					label:			"Have you ever shopped at Fairway?",
 					required:		true,
 					list: [{
 							value:		"Yes",
@@ -248,41 +360,42 @@
 					}
 				}
 			},{
-				funscale: {
-					type:			"scale",
-					label:			"On a scale from 1 to 10, how would you rate this concept?",
+				future: {
+					type:			"radio",
+					label:			"Do you plan on shopping at Fairway in the future?",
 					required:		true,
-					scale:			{
-						min:	1,
-						max:	10
-					},
+					list: [{
+							value:		"Yes",
+							label:		"Yes"
+						},{
+							value:		"No",
+							label:		"No"
+						}],
 					attr:	{
-						"data-group": "2"
+						"data-group": "1"
 					}
 				}
 			},{
-				word: {
-					type:			"varchar",
-					label:			"What word would be describe your race experience?",
+				post: {
+					type:			"radio",
+					label:			"How likely are you to post online about brands/products via Facebook, reviews, blogs posts, etc. ",
 					required:		true,
+					list: [{
+							value:		"Very Likely",
+							label:		"Very Likely"
+						},{
+							value:		"Somewhat Likely",
+							label:		"Somewhat Likely"
+						},{
+							value:		"Not at all",
+							label:		"Not at all"
+						}],
 					attr:	{
-						"data-group": "2"
-					}
-				}
-			},{
-				suggestions: {
-					type:			"text",
-					label:			"What would you like to be done differently with the next race?",
-					required:		true,
-					attr:	{
-						"data-group": "2"
+						"data-group": "1"
 					}
 				}
 			}];
-			
-			
-			
-			console.log("survey",JSON.stringify({survey:survey,time:600}));
+			console.log("survey",JSON.stringify(survey));
 			
 			
 			

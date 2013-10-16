@@ -15,10 +15,11 @@
 		<script type="text/javascript" src="droplist.js"></script>
 		<script type="text/javascript" src="placeholder.js"></script>
 		<script type="text/javascript" src="blur.js"></script>
+		<script type="text/javascript" src="drag.js"></script>
 		<script type="text/javascript" src="jsurvey.js"></script>
 	</head>
 	<body>
-		<div id="container" style="width: 400px;">
+		<div id="container" style="width: 600px;">
 			
 		</div>
 		<button class="btn_previous">&laquo; Previous</button><button class="btn_next">Next &raquo;</button><button class="btn_submit">Submit</button>
@@ -118,36 +119,39 @@
 			}];
 			console.log("survey",JSON.stringify({survey:survey}));
 			*/
-			/*var survey = [{
-				screens: {
+			/*
+			var survey = [{
+				q1: {
 					type:			"radio",
-					label:			"What year did the iPhone first appear?",
+					label:			"The word fandango originally meant what?",
 					required:		true,
 					list: [{
-							value:		"2007",
-							label:		"2007"
+							value:		"A spicy Italian soup",
+							label:		"A spicy Italian soup"
 						},{
-							value:		"2006",
-							label:		"2006"
+							value:		"A mythical sea creature",
+							label:		"A mythical sea creature"
 						},{
-							value:		"2009",
-							label:		"2009"
+							value:		"To observe",
+							label:		"To observe"
 						},{
-							value:		"2005",
-							label:		"2005"
+							value:		"A dance that originated in Spain",
+							label:		"A dance that originated in Spain"
 						}],
-					answer:	"2007",
+					answer:	"A dance that originated in Spain",
 					attr:	{
 						"data-group": "1"
 					}
 				}
 			}];
+			*/
+			/*
 			var survey = [{
-				screens: {
+				q3: {
 					type:			"varchar",
-					label:			"Before Steve Jobs found Apple, he worked at what company?",
+					label:			"The Knicks organization is committed to building programs of excellence that give back to the community. What organization is partnered with the Knicks that continues to make dreams come true for children in crisis?",
 					required:		true,
-					answer:	"Atari",
+					answer:			["Garden of Dreams Foundation","Garden of Dreams"],
 					attr:	{
 						"data-group": "1"
 					}
@@ -183,22 +187,24 @@
 					}
 				}
 			}];*/
-			/*var survey = [{
-				pixelate: {
+			/*
+			var survey = [{
+				q6: {
 					type:			"pixelate-varchar",
-					label:			"What movie is this scene from?",
+					label:			"Identify this NY Knicks great. ",
 					required:		true,
 					pixelate:		{
-						directory:		"races/images/friendfamily/pixelate/01/",
+						directory:		"races/images/nyknicks/06/",
 						levels:			11,
 						max:			30
 					},
-					answer:	"Shawshank Redemption",
+					answer:	["John Starks","Starks"],
 					attr:	{
 						"data-group": "1"
 					}
 				}
-			}];*/
+			}];
+			*/
 			/*, {
 				pixelate2: {
 					type:			"pixelate-varchar",
@@ -215,70 +221,162 @@
 					}
 				}
 			}*/
-			
-			/*var survey = [{
-				screens: {
+			/*
+			var survey = [{
+				q7: {
 					type:			"varchar",
-					label:			"Identify the 1994 movie with the following description: \"The cross-country adventures of two good-hearted but incredibly stupid friends.\"",
+					label:			"Fairway believes in giving back to the communities that it serves. Identify this particular group of brave men and women that Fairway supports.",
 					required:		true,
-					answer:			"Dumb and Dumber",
+					answer:			["Firemen","firefighters","fireman","firefighter"],
 					attr:	{
 						"data-group": "1"
 					}
 				}
-			}];*/
-			/*var survey = [{
-				q10: {
+			}];
+			*/
+			/*
+			var survey = [{
+				q5: {
 					type:			"radio",
-					label:			"Identify the movie that is not from the 1990's ",
+					label:			"Fairway's catering menu has an extensive selection of delectable foods and imported delights. What day of the year is Fairway's catering in the most demand?",
 					required:		true,
 					list: [{
-							value:		"The Little Mermaid",
-							label:		"The Little Mermaid"
+							value:		"July 4th",
+							label:		"July 4th"
 						},{
-							value:		"Pretty Woman",
-							label:		"Pretty Woman"
+							value:		"Super Bowl Sunday",
+							label:		"Super Bowl Sunday"
 						},{
-							value:		"Godfather III",
-							label:		"Godfather III"
+							value:		"New Year's Eve",
+							label:		"New Year's Eve"
 						},{
-							value:		"Ghost",
-							label:		"Ghost"
+							value:		"Thanksgiving",
+							label:		"Thanksgiving"
 						}],
-					answer:	"The Little Mermaid",
+					answer:	"Thanksgiving",
 					attr:	{
 						"data-group": "1"
 					}
 				}
-			}];*/
+			}];
+			*/
+			/*
+			var survey = [{
+				q9: {
+					type:			"image-quiz",
+					label:			"Fairway has one of the largest selections of fine imported olive oils. What country produces the most olive oil?",
+					required:		true,
+					list: [{
+						value:		"Greece",
+						label:		"Greece",
+						image:		"races/images/fairway/09/01.jpg"
+					},{
+						value:		"Spain",
+						label:		"Spain",
+						image:		"races/images/fairway/09/02.jpg"
+					},{
+						value:		"Italy",
+						label:		"Italy",
+						image:		"races/images/fairway/09/03.jpg"
+					},{
+						value:		"USA",
+						label:		"USA",
+						image:		"races/images/fairway/09/04.jpg"
+					}],
+					answer:	"Spain",
+					attr:	{
+						"data-group": "1"
+					}
+				}
+			}];
+			*/
+			/*
+			var survey = [{
+				q5: {
+					type:			"image-drag",
+					label:			"Guayusa contains the same amount of the world's most prized stimulant, caffeine. Not all brands pack the same punch - match the level of caffeine found in a single serving to the brands below.",
+					required:		true,
+					list: [{
+						label:		"80mg",
+						image:		"races/images/runa/05/01.png"
+					},{
+						label:		"47mg",
+						image:		"races/images/runa/05/02.png"
+					},{
+						label:		"75mg",
+						image:		"races/images/runa/05/03.png"
+					},{
+						label:		"90mg",
+						image:		"races/images/runa/05/04.png"
+					}],
+					attr:	{
+						"data-group": "1"
+					}
+				}
+			}];
+			*/
+			/*
+			var survey = [{
+				q5: {
+					type:			"image-varchar",
+					label:			"Apples to Apples has a wide range of outrageous comparisons. Identify the bird from the clue below.",
+					required:		true,
+					image:			"races/images/mattel/05/image.png",
+					answer:			["pigeon","pigeons"],
+					attr:	{
+						"data-group": "1"
+					}
+				}
+			}];
+			*/
 			
 			var survey = [{
-				pixelate: {
-					type:			"image-radio",
-					label:			"Everyone loves candy with their movie! Identify this candy born in the 1990's",
+				q10: {
+					type:			"pixelate-varchar",
+					label:			"Fairway is committed to organic and natural foods at low prices. Identify the organic delight below.",
 					required:		true,
-					image:			"http://beta.fleetwit.com/races/images/friendfamily/01/10.jpg",
-					list: [{
-						value:		"Fruties",
-						label:		"Fruties"
-					},{
-						value:		"Runts",
-						label:		"Runts"
-					},{
-						value:		"Warheads",
-						label:		"Warheads"
-					},{
-						value:		"Tarts",
-						label:		"Tarts"
-					}],
-					answer:	"Runts",
+					pixelate:		{
+						directory:		"races/images/fairway/10/",
+						levels:			11,
+						max:			30
+					},
+					answer:	["Asparagus"],
 					attr:	{
 						"data-group": "1"
 					}
 				}
 			}];
 			
-			console.log("quiz",JSON.stringify({quiz:survey,time:60}));
+			/*
+			var survey = [{
+				q1: {
+					type:			"image-radio",
+					label:			"Fairway Market is an iconic New York City food market. What decade was Fairway founded?",
+					required:		true,
+					image:			"races/images/fairway/01/logo.png",
+					list: [{
+							value:		"1920's",
+							label:		"1920's"
+						},{
+							value:		"1930's",
+							label:		"1930's"
+						},{
+							value:		"1950's",
+							label:		"1950's"
+						},{
+							value:		"1960's",
+							label:		"1960's"
+						}],
+					answer:	"1930's",
+					attr:	{
+						"data-group": "1"
+					}
+				}
+			}];
+			*/
+			
+			
+			console.log("quiz",JSON.stringify({quiz:survey,time:180}));
 			
 			$(function() {
 				$("#container").jsurvey({

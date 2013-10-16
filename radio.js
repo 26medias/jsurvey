@@ -23,7 +23,7 @@
 					this.hidden = $(this.hidden);
 					
 					var attributes = this.element[0].attributes;
-					console.log("attributes",attributes);
+					
 					$.each(attributes, function( index, attr ) {
 						if (attr.name != "class") {
 							scope.hidden.attr(attr.name, attr.value);
@@ -37,7 +37,23 @@
 					this.element.children().click(function() {
 						scope.element.children().removeClass("selected");
 						$(this).addClass("selected");
-						scope.hidden.val($(this).attr("data-value"));
+						// "other" field
+						if ($(this).data("onselect-display")) {
+							// display this one
+							$(this).find("input").slideDown();
+							// set the value to the value of the field (deselect -> reselect without clicking the field)
+							scope.hidden.val($(this).find("input").val());
+							// add a hook on the field
+							$(this).find("input").bind("blur", function() {
+								scope.hidden.val($(this).val());
+							});
+						} else {
+							// Hide all "other" fields
+							scope.element.find("[data-onselect-display] > input").slideUp();
+							scope.hidden.val($(this).attr("data-value"));
+							// Remove all hooks
+							scope.element.find("[data-onselect-display] > input").unbind("blur");
+						}
 					});
 					
 				} catch (err) {

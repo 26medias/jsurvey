@@ -214,6 +214,23 @@ textarea:focus {
 	background-repeat:		no-repeat;
 	padding-left:			20px;
 }
+.radio > div.radio-top {
+	background-position:	left 2px;
+}
+.radio.deep > div {
+	background-image:		transparent;
+	padding-left:			0;
+}
+.radio.deep > div > div {
+	cursor:					pointer;
+	background-image:		url("radio_off.png");
+	background-position:	left center;
+	background-repeat:		no-repeat;
+	padding-left:			20px;
+}
+.radio.deep > div.selected > div {
+	background-image:		url("radio_on.png");
+}
 .radio > div.selected {
 	background-image:		url("radio_on.png");
 }
@@ -231,4 +248,26 @@ textarea:focus {
 .radio.scale > .radio.selected {
 	background-image:		url("radio_on.png");
 	font-weight:			bold;
+}
+
+
+
+.checkbox {
+	
+}
+.checkbox > div {
+	cursor:					pointer;
+	background-image:		url("checkbox_off.png");
+	background-position:	left center;
+	background-repeat:		no-repeat;
+	padding-left:			20px;
+}
+.checkbox > div.selected {
+	background-image:		url("checkbox_on.png");
+}
+
+.div-inline > div {
+	display:				inline-block;
+	margin-right:			10px;
+	margin-bottom:			10px;
 }

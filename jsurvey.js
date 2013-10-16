@@ -25,6 +25,8 @@
 						onPenalty:		function() {}
 					},options);
 					
+					this.element.addClass("jsurvey");
+					
 					this.stack = [];
 					
 					this.fields		= {};
@@ -48,13 +50,21 @@
 						this.validator = false;
 					} else {
 						this.validator = function(el, errorOnly) {
+							console.log("el",el);
 							var output = scope.quizValidate(el, errorOnly);
-							if (!output && scope.options.penalty) {
+							/*if (!output && scope.options.penalty) {
 								scope.options.onPenalty();
-							}
+							}*/
 							return output;
 						};
 					}
+					
+					this.element.attr("tabindex",1).bind("keydown", function(e) {
+						e.stopImmediatePropagation();
+						if (e.keyCode == 13) {
+							scope.submitForm();
+						}
+					});
 					
 					this.options.submit.click(function() {
 						scope.element.formapi({
@@ -62,6 +72,9 @@
 							success: 	function(response) {
 								console.info("response",response);
 								scope.options.onSubmit(response);
+							},
+							fail:	function() {
+								scope.options.onPenalty();
 							}
 						});
 					});
@@ -129,7 +142,28 @@
 					}
 					
 					
+					// Now put the focus on the first text field
+					this.element.find('input[type="text"]').first().focus();
 					
+					window.Arbiter.subscribe("games.stop", function(data) {
+						// Stop the game, unload all events
+						console.log("receiving order to stop...");
+						scope.element.remove();
+					});
+
+
+					
+				} catch (err) {
+					this.error(err);
+				}
+			};
+			pluginClass.prototype.submitForm = function (options) {
+				try {
+					if (this.options.next.is(":visible")) {
+						this.options.next.click();
+					} else {
+						this.options.submit.click();
+					}
 				} catch (err) {
 					this.error(err);
 				}
@@ -204,6 +238,9 @@
 							filter:	'[data-group="'+scope.currentgroup+'"]',
 							success: function(response) {
 								displayFunction();
+							},
+							fail:	function() {
+								scope.options.onPenalty();
 							}
 						});
 					}
@@ -253,7 +290,7 @@
 						data = item[name];
 					}
 					
-					var defer = false;	// feder the activa component to a sub div (image-pixelate for example, where the radios are in a subdiv)
+					var defer = false;	// defer the active component to a sub div (image-pixelate for example, where the radios are in a subdiv)
 					
 					switch (data.type) {
 						default:
@@ -261,6 +298,16 @@
 							this.fields[name] 			= $.create("input",$(),true);
 							this.fields[name].type 		= "text";
 							this.fields[name] 			= $(this.fields[name]);
+						break;
+						case "image-varchar":
+							this.fields[name] 		= $.create("div",$());
+							var img					= $.create("img",this.fields[name]);
+							img.attr("src",data.image);
+							img.addClass("raceimg");
+							var field  				= $.create("input",this.fields[name],true);
+							field.type 				= "text";
+							field 					= $(field);
+							defer 					= field;
 						break;
 						case "pixelate-varchar":
 							this.fields[name] 		= $.create("div",$());
@@ -324,6 +371,13 @@
 									var listitem	= $.create("div", scope.fields[name]);
 										listitem.attr("data-value", data.list[i].value);
 										listitem.html(data.list[i].label);
+									if (data.list[i].other) {
+										listitem.attr("data-onselect-display", "#jsurvey_other_"+name+"_"+data.list[i].value);
+										listitem.addClass("radio-top");
+										var otherfield = $.create("input", listitem);
+										otherfield.attr("id", "jsurvey_other_"+name+"_"+data.list[i].value);
+										otherfield.hide();
+									}
 								})(i);
 							}
 						break;
@@ -331,6 +385,7 @@
 							this.fields[name] 		= $.create("div",$());
 							var img					= $.create("img",this.fields[name]);
 							img.attr("src",data.image);
+							img.addClass("raceimg");
 							var radios				= $.create("div",this.fields[name]);
 							radios.addClass("radio");
 							radios.attr("data-radio",name);
@@ -340,6 +395,27 @@
 									var listitem	= $.create("div", radios);
 										listitem.attr("data-value", data.list[i].value);
 										listitem.html(data.list[i].label);
+								})(i);
+							}
+						break;
+						case "image-quiz":
+							this.fields[name] 		= $.create("div",$());
+							var radios				= $.create("div",this.fields[name]);
+							radios.addClass("radio").addClass("deep").addClass("div-inline");
+							radios.attr("data-radio",name);
+							defer = radios;
+							for (i=0;i<data.list.length;i++) {
+								
+								(function(i){
+									var listitem	= $.create("div", radios);
+									listitem.attr("data-value", data.list[i].value);
+									var img			= $.create("img",listitem);
+									if (i%2) {
+										listitem.addClass("odd");
+									}
+									img.attr("src",data.list[i].image);
+									var radioitem	= $.create("div", listitem);
+										radioitem.html(data.list[i].label);
 								})(i);
 							}
 						break;
@@ -378,7 +454,6 @@
 					if (data.regex) {
 						this.fields[name].attr("data-regex", data.regex);
 					}
-					
 					
 					if (data.placeholder) {
 						if (!defer) {
@@ -484,6 +559,7 @@
 						break;
 						case "pixelate-radio":
 						case "image-radio":
+						case "image-quiz":
 							this.fields[item.name].find(".radio").radio();
 						break;
 						case "checkbox":
@@ -568,13 +644,23 @@
 			pluginClass.prototype.quizValidate = function (el, errorOnly) {
 				try {
 					var scope = this;
+					var i;
 					var j;
 					
 					var elName = $(el).data("name");
 					//console.log("this.answers",this.answers);
-					//console.log("elName",elName);
-					if (this.answers[elName].toLowerCase() != $(el).val().toLowerCase()) {
+					if ($.isArray(this.answers[elName])) {
+						// more than one valid answer
+						for (i=0;i<this.answers[elName].length;i++) {
+							if (this.answers[elName][i].toLowerCase() == $(el).val().toLowerCase()) {
+								return true
+							}
+						}
 						return false;
+					} else {
+						if (this.answers[elName].toLowerCase() != $(el).val().toLowerCase()) {
+							return false;
+						}
 					}
 					return true;
 					
