@@ -16,6 +16,8 @@
 		<script type="text/javascript" src="placeholder.js"></script>
 		<script type="text/javascript" src="jsurvey.js"></script>
 		<script type="text/javascript" src="checkbox.js"></script>
+		<link rel="stylesheet" href="redactor/redactor.css" />
+		<script type="text/javascript" src="redactor/redactor.min.js"></script>
 	</head>
 	<body>
 		<div id="container" style="width: 400px;">
@@ -344,33 +346,22 @@
 			
 			
 			var survey = [{
-				shopped: {
-					type:			"radio",
-					label:			"Have you ever shopped at Fairway?",
+				editor: {
+					type:			"text",
+					wysiwyg:		true,
+					placeholder:	"",
+					label:			"Example of editor",
 					required:		true,
-					list: [{
-							value:		"Yes",
-							label:		"Yes"
-						},{
-							value:		"No",
-							label:		"No"
-						}],
 					attr:	{
 						"data-group": "1"
 					}
 				}
 			},{
-				future: {
-					type:			"radio",
-					label:			"Do you plan on shopping at Fairway in the future?",
+				text: {
+					type:			"text",
+					placeholder:	"",
+					label:			"Example of textarea",
 					required:		true,
-					list: [{
-							value:		"Yes",
-							label:		"Yes"
-						},{
-							value:		"No",
-							label:		"No"
-						}],
 					attr:	{
 						"data-group": "1"
 					}
@@ -378,7 +369,7 @@
 			},{
 				post: {
 					type:			"radio",
-					label:			"How likely are you to post online about brands/products via Facebook, reviews, blogs posts, etc. ",
+					label:			"How likely are you to post online about brands/products via Facebook, reviews, blogs posts, etc.",
 					required:		true,
 					list: [{
 							value:		"Very Likely",
@@ -389,6 +380,54 @@
 						},{
 							value:		"Not at all",
 							label:		"Not at all"
+						}],
+					attr:	{
+						"data-group": "1"
+					}
+				}
+			},{
+				relationship: {
+					type:			"radio",
+					label:			"How would you describe your relationship to FleetWit?",
+					required:		true,
+					list: [{
+							value:		"Die Hard Fan",
+							label:		"Die Hard Fan"
+						},{
+							value:		"A Fan",
+							label:		"A Fan"
+						},{
+							value:		"It's OK",
+							label:		"It's OK"
+						}],
+					attr:	{
+						"data-group": "1"
+					}
+				}
+			},{
+				suggest: {
+					type:			"varchar",
+					placeholder:	"",
+					label:			"Can you suggest any brands you would like us to create races for?",
+					required:		true,
+					attr:	{
+						"data-group": "1"
+					}
+				}
+			},{
+				difficulty: {
+					type:			"radio",
+					label:			"How would you rank the difficulty of this race?",
+					required:		true,
+					list: [{
+							value:		"Too hard",
+							label:		"Too hard"
+						},{
+							value:		"Too easy",
+							label:		"Too easy"
+						},{
+							value:		"Just right",
+							label:		"Just right"
 						}],
 					attr:	{
 						"data-group": "1"

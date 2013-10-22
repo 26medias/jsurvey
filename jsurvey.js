@@ -326,6 +326,10 @@
 						case "text":
 							this.fields[name] 			= $.create("textarea",$());
 						break;
+						case "editor":
+							this.fields[name] 			= $.create("textarea",$());
+							this.fields[name].attr('id', "wysiwyg_"+Math.round(Math.random()*Math.random()*10000000000));	// randomid
+						break;
 						case "list":
 							this.fields[name] 			= $.create("div",$());
 							this.fields[name].addClass("droplist");
@@ -548,7 +552,10 @@
 						default:
 						case "varchar":
 						case "text":
-							
+							if (item.data.wysiwyg) {
+								this.fields[item.name].attr('data-wysiwyg','true');
+								this.fields[item.name].redactor({ focus: true });
+							}
 						break;
 						case "list":
 							this.fields[item.name].droplist();
